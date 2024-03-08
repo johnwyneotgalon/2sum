@@ -1,0 +1,59 @@
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static int[] TwoSum(int[] nums, int target)
+    {
+        Dictionary<int, int> numIndices = new Dictionary<int, int>();
+
+        for (int i = 0; i < nums.Length; i++)
+        {
+            int complement = target - nums[i];
+            if (numIndices.ContainsKey(complement))
+            {
+                return new int[] { numIndices[complement], i };
+            }
+            if (!numIndices.ContainsKey(nums[i]))
+            {
+                numIndices.Add(nums[i], i);
+            }
+        }
+        throw new ArgumentException("No two sum solution");
+    }
+
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Enter the elements of the array separated by spaces:");
+        string input = Console.ReadLine();
+        string[] numStrings = input.Split(' ');
+
+        int[] nums = new int[numStrings.Length];
+        for (int i = 0; i < numStrings.Length; i++)
+        {
+            if (!int.TryParse(numStrings[i], out nums[i]))
+            {
+                Console.WriteLine("Invalid input for element at index " + i);
+                return;
+            }
+        }
+
+        Console.WriteLine("Enter the target sum:");
+        int target;
+        if (!int.TryParse(Console.ReadLine(), out target))
+        {
+            Console.WriteLine("Invalid input for target sum.");
+            return;
+        }
+
+        try
+        {
+            int[] result = TwoSum(nums, target);
+            Console.WriteLine("Output: [{0},{1}]", result[0], result[1]);
+        }
+        catch (ArgumentException e)
+        {
+            Console.WriteLine(e.Message);
+        }
+    }
+}
